@@ -1,0 +1,4 @@
+<form (ngSubmit)="onSubmit(form)" #form='ngForm'>
+  <input name="input" ngModel required>
+  <button type="submit" [disabled]="!form.valid">Confirm ({{products.length}})</button>
+</form>

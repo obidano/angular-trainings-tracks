@@ -5,3 +5,7 @@ mat-form-field {
 form {
   //border: 1px solid;
 }
+
+input[autocomplete='off']:read-only {
+  background-color: transparent!important;
+}

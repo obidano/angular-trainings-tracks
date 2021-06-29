@@ -1,7 +1,33 @@
-<div>
-  <a routerLink="/">Home</a> <br>
-  <a routerLink="/signup">Form</a><br>
-  <a routerLink="/my-app">MyApp</a>
-</div>
-<br>
-<router-outlet></router-outlet>
+<mat-sidenav-container>
+  <mat-sidenav mode="side" #sidenav role="navigation">Sidenav content</mat-sidenav>
+  <mat-sidenav-content>
+    <!--    <button mat-raised-button (click)="sidenav.toggle()">Show Side Nav</button>-->
+    <mat-toolbar color="primary">
+      <div>
+        <button mat-icon-button (click)="sidenav.toggle()">
+          <mat-icon>menu</mat-icon>
+        </button>
+      </div>
+      <div>LOGO</div>
+      <div fxFlex fxLayout fxLayoutAlign="flex-end">
+        <ul fxLayout fxLayoutGap="10px" class="nav-items">
+          <li>
+            <a routerLink="/signup">Signup</a>
+          </li>
+          <li>
+            <a routerLink="/login">login</a>
+          </li>
+          <li>
+            <a routerLink="/training">training</a>
+          </li>
+        </ul>
+
+      </div>
+    </mat-toolbar>
+    <main>
+      <router-outlet></router-outlet>
+
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+

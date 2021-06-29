@@ -24,5 +24,6 @@ export class ProductService {
   deleteProduct(name: string) {
     this.products = this.products.filter(i => i != name)
     console.log('DELETE', name)
+    this.productsUpdated.next()
   }
 }

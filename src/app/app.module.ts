@@ -19,6 +19,7 @@ import { NewTrainingComponent } from './pages/new-training/new-training.componen
 import { PastTrainingComponent } from './pages/past-training/past-training.component';
 import { WelcomeComponent } from './pages/welcome/welcome.component';
 import {FlexLayoutModule} from "@angular/flex-layout";
+import {MAT_DATE_LOCALE} from "@angular/material/core";
 
 @NgModule({
   declarations: [
@@ -43,7 +44,7 @@ import {FlexLayoutModule} from "@angular/flex-layout";
     MaterialModule,
     FlexLayoutModule
   ],
-  providers: [ProductService],
+  providers: [ProductService, {provide: MAT_DATE_LOCALE, useValue: 'fr-FR'},],
   bootstrap: [AppComponent]
 })
 export class AppModule {

@@ -9,10 +9,11 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatCardModule} from "@angular/material/card";
 import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatToolbarModule} from "@angular/material/toolbar";
+import {MatListModule} from "@angular/material/list";
 
 const importsModules = [MatButtonModule, MatIconModule, MatFormFieldModule,
   MatInputModule, MatDatepickerModule, MatNativeDateModule, MatCheckboxModule,
-  MatCardModule, MatSidenavModule, MatToolbarModule]
+  MatCardModule, MatSidenavModule, MatToolbarModule, MatListModule]
 
 @NgModule({
   imports: importsModules,

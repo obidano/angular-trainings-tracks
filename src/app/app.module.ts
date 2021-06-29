@@ -20,6 +20,8 @@ import { PastTrainingComponent } from './pages/past-training/past-training.compo
 import { WelcomeComponent } from './pages/welcome/welcome.component';
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {MAT_DATE_LOCALE} from "@angular/material/core";
+import { HeaderComponent } from './navigations/header/header.component';
+import { SidenavComponent } from './navigations/sidenav/sidenav.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,9 @@ import {MAT_DATE_LOCALE} from "@angular/material/core";
     CurrentTrainingComponent,
     NewTrainingComponent,
     PastTrainingComponent,
-    WelcomeComponent
+    WelcomeComponent,
+    HeaderComponent,
+    SidenavComponent
   ],
   imports: [
     BrowserModule,

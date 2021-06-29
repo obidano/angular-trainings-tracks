@@ -1,0 +1,15 @@
+<p *ngIf="products.length==4">{{productName}}</p>
+
+<button (click)="OnAddProduct()" [disabled]="productName==disabledText">Click me</button>
+
+<input [(ngModel)]="productName">
+
+<div style="margin-top: 12px">
+  <app-product *ngFor="let product of products"
+               (prodcutClicked)="productClick($event)"
+               [name]="product">{{product}}</app-product>
+</div>
+<br>
+<br>
+
+<app-form></app-form>

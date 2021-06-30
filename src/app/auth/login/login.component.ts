@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {NgForm} from "@angular/forms";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-login',
@@ -9,7 +10,7 @@ import {NgForm} from "@angular/forms";
 export class LoginComponent implements OnInit {
   pwd_type = "text"
 
-  constructor() {
+  constructor(private auth: AuthService) {
     setTimeout(() => this.pwd_type = 'password', 500)
   }
 
@@ -18,6 +19,8 @@ export class LoginComponent implements OnInit {
 
   OnSubmit(form: NgForm) {
     console.log(form.value)
+    const {value} = form
+    this.auth.login({email: value.email, password: value.pwd})
   }
 
 }

@@ -6,7 +6,7 @@ import {MypageComponent} from './pages/mypage/mypage.component';
 import {FormsModule} from "@angular/forms";
 import {ProductComponent} from './pages/product/product.component';
 import {FormComponent} from './pages/form/form.component';
-import {ProductService} from "./product.service";
+import {ProductService} from "./services/product.service";
 import {AppRoutingModule} from "./modules/app-routing.module";
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MaterialModule} from "./modules/material.module";
@@ -23,6 +23,7 @@ import {MAT_DATE_LOCALE} from "@angular/material/core";
 import { HeaderComponent } from './navigations/header/header.component';
 import { SidenavComponent } from './navigations/sidenav/sidenav.component';
 import { TrainingDialogComponent } from './pages/training/training-dialog/training-dialog.component';
+import {AuthService} from "./services/auth.service";
 
 @NgModule({
   declarations: [
@@ -50,7 +51,7 @@ import { TrainingDialogComponent } from './pages/training/training-dialog/traini
     MaterialModule,
     FlexLayoutModule
   ],
-  providers: [ProductService, {provide: MAT_DATE_LOCALE, useValue: 'fr-FR'},],
+  providers: [ProductService, AuthService,{provide: MAT_DATE_LOCALE, useValue: 'fr-FR'},],
   bootstrap: [AppComponent]
 })
 export class AppModule {

@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from "rxjs";
-import {ProductService} from "../../product.service";
+import {ProductService} from "../../services/product.service";
 
 @Component({
   selector: 'app-form',

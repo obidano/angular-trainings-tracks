@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {NgForm} from "@angular/forms";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-sign-up',
@@ -10,7 +11,7 @@ export class SignUpComponent implements OnInit {
   pwd_type = "text"
   maxDate: any;
 
-  constructor() {
+  constructor(private auth: AuthService) {
     setTimeout(() => this.pwd_type = 'password', 500)
   }
 
@@ -22,5 +23,9 @@ export class SignUpComponent implements OnInit {
 
   OnSubmit(form: NgForm) {
     console.log(form.value)
+    this.auth.registerUser({
+      email: form.value.email,
+      password: form.value.pwd
+    })
   }
 }

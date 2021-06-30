@@ -12,11 +12,12 @@ export class AuthService {
   isAuthChanged = new Subject<boolean>()
 
   constructor(private router: Router) {
+    // this.onAuthSuccess();
   }
 
   private onAuthSuccess() {
-    this.isAuthChanged.next(true)
     this.router.navigate(['/training'])
+    this.isAuthChanged.next(true)
   }
 
   registerUser(auth: AuthModel) {

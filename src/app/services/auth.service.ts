@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {UserModel} from "../models/user.model";
 import {AuthModel} from "../models/auth.model";
 import {Subject} from "rxjs";
+import {Router} from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,12 @@ export class AuthService {
   private user?: UserModel | null
   isAuthChanged = new Subject<boolean>()
 
-  constructor() {
+  constructor(private router: Router) {
+  }
+
+  private onAuthSuccess() {
+    this.isAuthChanged.next(true)
+    this.router.navigate(['/training'])
   }
 
   registerUser(auth: AuthModel) {
@@ -18,6 +24,7 @@ export class AuthService {
       email: auth.email,
       userId: Math.round(Math.random() * 1000).toString()
     }
+    this.onAuthSuccess()
   }
 
   login(auth: AuthModel) {
@@ -25,13 +32,13 @@ export class AuthService {
       email: auth.email,
       userId: Math.round(Math.random() * 1000).toString()
     }
-
-    this.isAuthChanged.next(true)
+    this.onAuthSuccess()
   }
 
   logout() {
     this.user = null;
     this.isAuthChanged.next(false)
+    this.router.navigate(['/login'])
 
   }
 

@@ -1,9 +1,9 @@
 <mat-sidenav-container>
   <mat-sidenav #sidenav role="navigation">
-    <app-sidenav (close)="sidenav.close()" *ngIf="isAuth"></app-sidenav>
+    <app-sidenav (close)="sidenav.close()"></app-sidenav>
   </mat-sidenav>
   <mat-sidenav-content>
-    <app-header (toggle)="sidenav.toggle()" *ngIf="isAuth"></app-header>
+    <app-header (toggle)="sidenav.toggle()"></app-header>
     <main>
       <router-outlet></router-outlet>
 

@@ -14,7 +14,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { SignUpComponent } from './auth/sign-up/sign-up.component';
 import { LoginComponent } from './auth/login/login.component';
 import { TrainingComponent } from './pages/training/training.component';
-import { CurrentTrainingComponent } from './pages/current-training/current-training.component';
+import { CurrentTrainingComponent } from './pages/training/current-training/current-training.component';
 import { NewTrainingComponent } from './pages/training/new-training/new-training.component';
 import { PastTrainingComponent } from './pages/training/past-training/past-training.component';
 import { WelcomeComponent } from './pages/welcome/welcome.component';

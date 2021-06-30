@@ -15,7 +15,7 @@ export class TrainingDialogComponent implements OnInit {
   }
 
   onNoClick(): void {
-    this.dialogRef.close();
+    this.dialogRef.close(1);
   }
 
 }

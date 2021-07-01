@@ -12,20 +12,13 @@ const finishcollection = 'finishedTrainings'
 })
 export class TrainingService {
 
-
-  isActiveChanged = new Subject<TrainingModel | null>()
-  availablesChanged = new Subject<TrainingModel[]>()
   trainingsChanged = new Subject<TrainingModel[]>()
+  availablesChanged = new Subject<TrainingModel[]>()
+  isActiveChanged = new Subject<TrainingModel | null>()
+
+
   private _trainings: TrainingModel[] = []
-
   private _availableTrainings: TrainingModel[] = [];
-  /* = [
-    /!* {id: 'crunches', name: 'Crunches', duration: 30, calories: 8},
-     {id: 'touch-toes', name: 'Touch Toes', duration: 180, calories: 15},
-     {id: 'side-lunges', name: 'Side Lunges', duration: 120, calories: 18},
-     {id: 'burpees', name: 'Burpees', duration: 60, calories: 8}*!/
-  ]*/
-
   private _activeTraining?: TrainingModel | null;
 
   constructor(private fire: AngularFirestore) {
@@ -47,7 +40,7 @@ export class TrainingService {
       }))
 
     data.subscribe((res) => {
-      console.log("RES", res)
+      // console.log("RES", res)
       this._availableTrainings = res as TrainingModel[];
       this.availablesChanged.next(this.availableTrainings)
     })
@@ -70,7 +63,7 @@ export class TrainingService {
       }))
 
     data.subscribe((res) => {
-      console.log("RES", res)
+      // console.log("RES", res)
       this._trainings = res as TrainingModel[];
       this.trainingsChanged.next(this.trainings)
     })
@@ -87,6 +80,7 @@ export class TrainingService {
 
 
   startTraining(selectedId: string) {
+    this.fire.doc(Avcollection + '/' + selectedId).update({lastSelected: new Date()})
     this._activeTraining = this.availableTrainings.find(i => i.id == selectedId)
     this.isActiveChanged.next({...this._activeTraining as TrainingModel})
   }

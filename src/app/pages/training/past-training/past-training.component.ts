@@ -25,6 +25,7 @@ export class PastTrainingComponent implements OnInit, AfterViewInit, OnDestroy {
     this.tr.fetchTrainings();
     this.dataSource.data = this.tr.trainings
     this.trainingsListener = this.tr.trainingsChanged.subscribe(res => {
+      // console.log('RES', res)
       this.dataSource.data = res
     });
   }

@@ -23,6 +23,7 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.tr.fetchAvailableTrainings()
     this.availableListener = this.tr.availablesChanged.subscribe(res => {
+      // console.log('RES', res)
       this.availableTrainings = res;
     });
   }

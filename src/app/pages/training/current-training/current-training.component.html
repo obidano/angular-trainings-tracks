@@ -2,6 +2,7 @@
          fxLayoutAlign="start center" fxLayoutGap="15px">
   <mat-progress-spinner mode="determinate" [value]="progress"></mat-progress-spinner>
   <h1>{{progress}}%</h1>
+  <p>{{training?.name}}: {{training?.calories}} Kcal</p>
   <p>Keep going...</p>
   <button color="accent" mat-raised-button (click)="onStop()">{{progress != 100 ? "Stop" : "Exit"}}</button>
 </section>

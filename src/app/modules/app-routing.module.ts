@@ -6,11 +6,11 @@ import {AuthGuard} from "../guards/auth.guard";
 const routes: Routes = [
   {path: '', component: WelcomeComponent},
   /*{path: 'signup', component: SignUpComponent},
-  {path: 'login', component: LoginComponent},
+  {path: 'login', component: LoginComponent},*/
   {
-    path: 'training', component: TrainingComponent,
+    path: 'training', loadChildren: () => import('../pages/training/training.module').then(m => m.TrainingModule),
     // canActivate: [AuthGuard]
-  },*/
+  },
 ]
 
 @NgModule({

@@ -7,12 +7,13 @@ import {environment} from "../../environments/environment";
 import {AngularFirestoreModule} from "@angular/fire/firestore";
 import {AngularFireAuthModule} from "@angular/fire/auth";
 import {FormsModule} from "@angular/forms";
+import {CommonModule} from "@angular/common";
 
 @NgModule({
   exports: [
+    CommonModule,
     MaterialModule,
     FlexLayoutModule,
-    BrowserAnimationsModule,
     AngularFirestoreModule,
     AngularFireAuthModule,
     FormsModule,

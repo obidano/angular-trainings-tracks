@@ -4,7 +4,7 @@ import {TrainingComponent} from "./training.component";
 
 const routes: Routes = [
   {
-    path: 'training', component: TrainingComponent,
+    path: '', component: TrainingComponent,
     // canActivate: [AuthGuard]
   },
 ]
@@ -16,6 +16,6 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class TrainingRouteModule{
+export class TrainingRouteModule {
 
 }

@@ -41,13 +41,13 @@ import {TrainingModule} from "./pages/training/training.module";
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     FormsModule,
     MaterialModule,
     FlexLayoutModule,
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     AuthModule,
-    TrainingModule
   ],
   providers: [ProductService,
     AuthService,

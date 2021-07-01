@@ -14,11 +14,12 @@ import {MatTabsModule} from "@angular/material/tabs";
 import {MatSelectModule} from "@angular/material/select";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MatDialogModule} from "@angular/material/dialog";
+import {MatTableModule} from "@angular/material/table";
 
 const importsModules = [MatButtonModule, MatIconModule, MatFormFieldModule,
   MatInputModule, MatDatepickerModule, MatNativeDateModule, MatCheckboxModule,
   MatCardModule, MatSidenavModule, MatToolbarModule, MatListModule, MatTabsModule,
-  MatSelectModule, MatOptionModule, MatProgressSpinnerModule, MatDialogModule]
+  MatSelectModule, MatOptionModule, MatProgressSpinnerModule, MatDialogModule, MatTableModule]
 
 @NgModule({
   imports: importsModules,

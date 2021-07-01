@@ -3,6 +3,6 @@ export interface TrainingModel {
   name: string;
   duration: number;
   calories: number;
-  date?: Date;
-  state?: 'completed' | 'canceled' | null
+  date?: Date | any;
+  state?: 'completed' | 'canceled' | any
 }

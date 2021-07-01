@@ -18,10 +18,29 @@ export class AuthService {
     // this.onAuthSuccess();
   }
 
+  initAuthListener() {
+    this.fireAuth.authState.subscribe(user => {
+      console.log("USER", user)
+      if (user) {
+        this.onAuthSuccess()
+      } else {
+        this.onLogout()
+      }
+    })
+  }
+
   private onAuthSuccess() {
     this.isAuthenticated = true;
     this.router.navigate(['/training'])
     this.isAuthChanged.next(true)
+  }
+
+  private onLogout() {
+    this.user = null;
+    this.isAuthenticated = true;
+    this.isAuthChanged.next(false)
+    this.tr.cancelSubscriptions()
+    this.router.navigate(['/login'])
   }
 
   async registerUser(auth: AuthModel) {
@@ -29,24 +48,16 @@ export class AuthService {
       const res: any = await this.fireAuth.createUserWithEmailAndPassword(auth.email, auth.password)
       console.log("SUCCESS", res.user)
       this.user = {email: res.user?.email, userId: res.user?.uid}
-      this.onAuthSuccess()
-
     } catch (err) {
       console.log('ERROR', err)
     }
   }
 
   async login(auth: AuthModel) {
-    this.user = {
-      email: auth.email,
-      userId: Math.round(Math.random() * 1000).toString()
-    }
-
     try {
       const res: any = await this.fireAuth.signInWithEmailAndPassword(auth.email, auth.password)
       console.log("SUCCESS", res)
       this.user = {email: res.user?.email, userId: res.user?.uid}
-      this.onAuthSuccess()
     } catch (err) {
       console.log('ERROR', err)
     }
@@ -54,12 +65,8 @@ export class AuthService {
   }
 
   logout() {
-    this.user = null;
     this.fireAuth.signOut()
-    this.isAuthenticated = true;
-    this.isAuthChanged.next(false)
-    this.tr.cancelSubscriptions()
-    this.router.navigate(['/login'])
+
 
   }
 

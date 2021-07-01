@@ -2,6 +2,7 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {TrainingService} from "../../../services/training.service";
 import {TrainingModel} from "../../../models/trainingModel";
 import {NgForm} from "@angular/forms";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-new-training',
@@ -11,13 +12,13 @@ import {NgForm} from "@angular/forms";
 export class NewTrainingComponent implements OnInit {
   activity_types = [{label: 'Saut à la corde', value: 'saut_corde'}];
   @Output() onCreate = new EventEmitter()
-  availableTrainings: TrainingModel[] = []
+  availableTrainings?: Observable<any>
 
   constructor(private tr: TrainingService) {
   }
 
   ngOnInit(): void {
-    this.availableTrainings = this.tr.availableTrainings;
+    this.availableTrainings = this.tr.getAvailableTrainings();
   }
 
   submitTraining(form: NgForm) {
@@ -25,5 +26,9 @@ export class NewTrainingComponent implements OnInit {
 //     this.onCreate.emit()
 
 
+  }
+
+  valueChange(target: any) {
+    console.log('CHANGE', target?.value)
   }
 }

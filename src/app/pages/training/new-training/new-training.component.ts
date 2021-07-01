@@ -1,24 +1,30 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {TrainingService} from "../../../services/training.service";
 import {TrainingModel} from "../../../models/trainingModel";
 import {NgForm} from "@angular/forms";
-import {Observable} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 
 @Component({
   selector: 'app-new-training',
   templateUrl: './new-training.component.html',
   styleUrls: ['./new-training.component.scss']
 })
-export class NewTrainingComponent implements OnInit {
+export class NewTrainingComponent implements OnInit, OnDestroy {
   activity_types = [{label: 'Saut à la corde', value: 'saut_corde'}];
   @Output() onCreate = new EventEmitter()
-  availableTrainings?: Observable<any>
+  availableTrainings: TrainingModel[] = []
+  availableListener = new Subscription()
+
 
   constructor(private tr: TrainingService) {
   }
 
+
   ngOnInit(): void {
-    this.availableTrainings = this.tr.getAvailableTrainings();
+    this.tr.fetchAvailableTrainings()
+    this.availableListener = this.tr.availablesChanged.subscribe(res => {
+      this.availableTrainings = res;
+    });
   }
 
   submitTraining(form: NgForm) {
@@ -31,4 +37,9 @@ export class NewTrainingComponent implements OnInit {
   valueChange(target: any) {
     console.log('CHANGE', target?.value)
   }
+
+  ngOnDestroy(): void {
+    this.availableListener.unsubscribe()
+  }
+
 }

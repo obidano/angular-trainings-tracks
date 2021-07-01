@@ -2,16 +2,19 @@ import {Injectable} from '@angular/core';
 import {TrainingModel} from "../models/trainingModel";
 import {Observable, Subject} from "rxjs";
 import {AngularFirestore} from "@angular/fire/firestore";
+import {map} from 'rxjs/operators'
 
 @Injectable({
   providedIn: 'root'
 })
 export class TrainingService {
 
+
   isActiveChanged = new Subject<TrainingModel | null>()
+  availablesChanged = new Subject<TrainingModel[]>()
   private _trainings: TrainingModel[] = []
 
-  // private _availableTrainings?: Observable<any>;
+  private _availableTrainings: TrainingModel[] = [];
   /* = [
     /!* {id: 'crunches', name: 'Crunches', duration: 30, calories: 8},
      {id: 'touch-toes', name: 'Touch Toes', duration: 180, calories: 15},
@@ -24,11 +27,31 @@ export class TrainingService {
   constructor(private fire: AngularFirestore) {
   }
 
-  getAvailableTrainings() {
-    return this.fire
+  get availableTrainings(): TrainingModel[] {
+    return [...this._availableTrainings];
+  }
+
+  fetchAvailableTrainings() {
+    const data = this.fire
       .collection('availableTrainings')
-      .valueChanges()
-    // return [...this._availableTrainings];
+      .snapshotChanges()
+      .pipe(map(docArray => {
+        return docArray.map(doc => {
+          const r = doc.payload.doc
+          const d = r.data() as {}
+          return {
+            id: r.id,
+            ...d
+          }
+        })
+      }))
+
+    data.subscribe((res) => {
+      console.log("RES", res)
+      this._availableTrainings = res as TrainingModel[];
+      this.availablesChanged.next(this.availableTrainings)
+    })
+
   }
 
   get activeTraining(): TrainingModel {

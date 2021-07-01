@@ -17,12 +17,13 @@ import {MatDialogModule} from "@angular/material/dialog";
 import {MatTableModule} from "@angular/material/table";
 import {MatSortModule} from "@angular/material/sort";
 import {MatPaginatorModule} from "@angular/material/paginator";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 
 const importsModules = [MatButtonModule, MatIconModule, MatFormFieldModule,
   MatInputModule, MatDatepickerModule, MatNativeDateModule, MatCheckboxModule,
   MatCardModule, MatSidenavModule, MatToolbarModule, MatListModule, MatTabsModule,
   MatSelectModule, MatOptionModule, MatProgressSpinnerModule, MatDialogModule,
-  MatTableModule, MatSortModule, MatPaginatorModule]
+  MatTableModule, MatSortModule, MatPaginatorModule, MatSnackBarModule]
 
 @NgModule({
   imports: importsModules,

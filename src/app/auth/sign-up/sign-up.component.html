@@ -39,7 +39,8 @@
       </mat-checkbox>
     </section>
 
-    <button mat-raised-button type="submit" [disabled]="!form.valid">Confirm</button>
+    <button mat-raised-button type="submit" [disabled]="!form.valid" *ngIf="!isLoading">Confirm</button>
+    <mat-spinner *ngIf="isLoading"></mat-spinner>
 
   </form>
 </section>

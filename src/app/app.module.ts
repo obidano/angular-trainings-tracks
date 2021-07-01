@@ -30,6 +30,7 @@ import {AngularFireModule} from "@angular/fire";
 import {environment} from "../environments/environment";
 import {AngularFirestoreModule} from "@angular/fire/firestore";
 import {AngularFireAuthModule} from "@angular/fire/auth";
+import {UiService} from "./services/ui.service";
 
 @NgModule({
   declarations: [
@@ -64,6 +65,7 @@ import {AngularFireAuthModule} from "@angular/fire/auth";
     AuthService,
     AuthGuard,
     TrainingService,
+    UiService,
     {provide: MAT_DATE_LOCALE, useValue: 'fr-FR'},],
   bootstrap: [AppComponent]
 })

@@ -54,6 +54,7 @@ export class AuthService {
 
   logout() {
     this.user = null;
+    this.fireAuth.signOut()
     this.isAuthenticated = true;
     this.isAuthChanged.next(false)
     this.router.navigate(['/login'])

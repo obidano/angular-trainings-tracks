@@ -7,6 +7,8 @@ import {AngularFireAuth} from "@angular/fire/auth";
 import {TrainingService} from "./training.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {UiService} from "./ui.service";
+import {Store} from "@ngrx/store";
+import {StateModel} from "../models/state.model";
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +20,7 @@ export class AuthService {
 
   constructor(private router: Router, private fireAuth: AngularFireAuth,
               private tr: TrainingService, private snack: MatSnackBar,
-              private ui: UiService) {
+              private ui: UiService, private store: Store<{ app: StateModel }>) {
     // this.onAuthSuccess();
   }
 
@@ -48,8 +50,8 @@ export class AuthService {
   }
 
   async registerUser(auth: AuthModel) {
-    this.ui.start_loading()
-
+    // this.ui.start_loading()
+    this.store.dispatch({type: 'START_LOADING'})
     try {
       const res: any = await this.fireAuth.createUserWithEmailAndPassword(auth.email, auth.password)
       console.log("SUCCESS", res.user)
@@ -58,12 +60,15 @@ export class AuthService {
       console.log('ERROR', err)
       this.ui.openSnack(err.message)
     }
-    this.ui.stop_loading()
+    // this.ui.stop_loading()
+    this.store.dispatch({type: 'STOP_LOADING'})
 
   }
 
   async login(auth: AuthModel) {
-    this.ui.start_loading()
+    // this.ui.start_loading()
+    this.store.dispatch({type: 'START_LOADING'})
+
     try {
       const res: any = await this.fireAuth.signInWithEmailAndPassword(auth.email, auth.password)
       console.log("SUCCESS", res)
@@ -72,7 +77,8 @@ export class AuthService {
       console.log('ERROR', err)
       this.ui.openSnack(err.message)
     }
-    this.ui.stop_loading()
+    // this.ui.stop_loading()
+    this.store.dispatch({type: 'STOP_LOADING'})
 
   }
 

@@ -9,7 +9,7 @@ export function AppReducer(state = initialState, action:any) {
     case 'START_LOADING':
       return {...state, isLoading: true}
     case 'STOP_LOADING':
-      return {...state, isLoading: true}
+      return {...state, isLoading: false}
     default:
       return state;
 

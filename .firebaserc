@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "ngrx-app-cfcba": {
+      "hosting": {
+        "ngrx-app": [
+          "ngrx-app-cfcba"
+        ]
+      }
+    }
+  }
+}

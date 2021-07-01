@@ -34,10 +34,6 @@ export class TrainingService {
     return [...this._trainings];
   }
 
-  set trainings(value: TrainingModel[]) {
-    this._trainings = value;
-  }
-
 
   startTraining(selectedId: string) {
     this._activeTraining = this.availableTrainings.find(i => i.id == selectedId)
@@ -59,7 +55,7 @@ export class TrainingService {
       ...this._activeTraining,
       date: new Date(),
       duration: this.activeTraining.duration * (progress / 100),
-      calories: this.activeTraining.duration * (progress / 100),
+      calories: this.activeTraining.calories * (progress / 100),
       state: 'canceled',
     } as TrainingModel)
     this._activeTraining = null;

@@ -9,6 +9,7 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent},*/
   {
     path: 'training', loadChildren: () => import('../pages/training/training.module').then(m => m.TrainingModule),
+    canLoad: [AuthGuard]
     // canActivate: [AuthGuard]
   },
 ]

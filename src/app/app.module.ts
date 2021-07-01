@@ -21,11 +21,10 @@ import {AuthGuard} from "./guards/auth.guard";
 import {TrainingService} from "./services/training.service";
 import {AngularFireModule} from "@angular/fire";
 import {environment} from "../environments/environment";
-import {AngularFirestoreModule} from "@angular/fire/firestore";
-import {AngularFireAuthModule} from "@angular/fire/auth";
 import {UiService} from "./services/ui.service";
 import {AuthModule} from "./auth/auth.module";
-import {TrainingModule} from "./pages/training/training.module";
+import {StoreModule} from "@ngrx/store";
+import {AppReducer} from "./app.reducer";
 
 @NgModule({
   declarations: [
@@ -48,6 +47,7 @@ import {TrainingModule} from "./pages/training/training.module";
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     AuthModule,
+    StoreModule.forRoot({app:AppReducer})
   ],
   providers: [ProductService,
     AuthService,

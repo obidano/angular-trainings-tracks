@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {TrainingModel} from "../models/trainingModel";
-import {Observable, Subject} from "rxjs";
+import {Observable, Subject, Subscription} from "rxjs";
 import {AngularFirestore} from "@angular/fire/firestore";
 import {map} from 'rxjs/operators'
 
@@ -15,6 +15,8 @@ export class TrainingService {
   trainingsChanged = new Subject<TrainingModel[]>()
   availablesChanged = new Subject<TrainingModel[]>()
   isActiveChanged = new Subject<TrainingModel | null>()
+
+  private fbSubs: Subscription[] = []
 
 
   private _trainings: TrainingModel[] = []
@@ -37,14 +39,13 @@ export class TrainingService {
           const {doc} = d.payload
           return {id: doc.id, ...doc.data() as {}}
         })
-      }))
+      })).subscribe((res) => {
+        // console.log("RES", res)
+        this._availableTrainings = res as TrainingModel[];
+        this.availablesChanged.next(this.availableTrainings)
+      })
 
-    data.subscribe((res) => {
-      // console.log("RES", res)
-      this._availableTrainings = res as TrainingModel[];
-      this.availablesChanged.next(this.availableTrainings)
-    })
-
+    this.fbSubs.push(data);
   }
 
   fetchTrainings() {
@@ -60,14 +61,12 @@ export class TrainingService {
             date: data?.date?.toDate()
           }
         })
-      }))
-
-    data.subscribe((res) => {
-      // console.log("RES", res)
-      this._trainings = res as TrainingModel[];
-      this.trainingsChanged.next(this.trainings)
-    })
-
+      })).subscribe((res) => {
+        // console.log("RES", res)
+        this._trainings = res as TrainingModel[];
+        this.trainingsChanged.next(this.trainings)
+      })
+    this.fbSubs.push(data)
   }
 
   get activeTraining(): TrainingModel {
@@ -105,6 +104,12 @@ export class TrainingService {
     } as TrainingModel)
     this._activeTraining = null;
     this.isActiveChanged.next(null)
+  }
+
+  cancelSubscriptions() {
+    this.fbSubs.forEach((subs) => {
+
+    })
   }
 
   private addDataToFirestore(data: TrainingModel) {

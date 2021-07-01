@@ -4,6 +4,7 @@ import {AuthModel} from "../models/auth.model";
 import {Subject} from "rxjs";
 import {Router} from "@angular/router";
 import {AngularFireAuth} from "@angular/fire/auth";
+import {TrainingService} from "./training.service";
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class AuthService {
   isAuthChanged = new Subject<boolean>()
   isAuthenticated = false;
 
-  constructor(private router: Router, private fireAuth: AngularFireAuth) {
+  constructor(private router: Router, private fireAuth: AngularFireAuth, private tr: TrainingService) {
     // this.onAuthSuccess();
   }
 
@@ -57,6 +58,7 @@ export class AuthService {
     this.fireAuth.signOut()
     this.isAuthenticated = true;
     this.isAuthChanged.next(false)
+    this.tr.cancelSubscriptions()
     this.router.navigate(['/login'])
 
   }

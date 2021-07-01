@@ -3,6 +3,7 @@ import {TrainingModel} from "../models/trainingModel";
 import {Observable, Subject, Subscription} from "rxjs";
 import {AngularFirestore} from "@angular/fire/firestore";
 import {map} from 'rxjs/operators'
+import {UiService} from "./ui.service";
 
 const Avcollection = 'availableTrainings'
 const finishcollection = 'finishedTrainings'
@@ -23,7 +24,7 @@ export class TrainingService {
   private _availableTrainings: TrainingModel[] = [];
   private _activeTraining?: TrainingModel | null;
 
-  constructor(private fire: AngularFirestore) {
+  constructor(private fire: AngularFirestore, private ui: UiService) {
   }
 
   get availableTrainings(): TrainingModel[] {
@@ -35,6 +36,7 @@ export class TrainingService {
       .collection(Avcollection)
       .snapshotChanges()
       .pipe(map(docArray => {
+        // throw new Error()
         return docArray.map(d => {
           const {doc} = d.payload
           return {id: doc.id, ...doc.data() as {}}
@@ -43,7 +45,7 @@ export class TrainingService {
         // console.log("RES", res)
         this._availableTrainings = res as TrainingModel[];
         this.availablesChanged.next(this.availableTrainings)
-      })
+      }, _ => this.ui.openSnack("Failed to fetch availables trainings"))
 
     this.fbSubs.push(data);
   }
@@ -65,7 +67,7 @@ export class TrainingService {
         // console.log("RES", res)
         this._trainings = res as TrainingModel[];
         this.trainingsChanged.next(this.trainings)
-      })
+      }, _ => this.ui.openSnack("Failed to fetch trainings data"))
     this.fbSubs.push(data)
   }
 

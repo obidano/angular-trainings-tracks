@@ -4,8 +4,9 @@ import {AuthService} from "../../services/auth.service";
 import {UiService} from "../../services/ui.service";
 import {Observable, Subscription} from "rxjs";
 import {Store} from "@ngrx/store";
-import {StateModel} from "../../models/state.model";
 import {map} from "rxjs/operators";
+import {getIsLoadin, State} from "../../reducers/app.reducer";
+import {getIsLoading} from "../../reducers/ui.reducer";
 
 @Component({
   selector: 'app-login',
@@ -19,12 +20,14 @@ export class LoginComponent implements OnInit, OnDestroy {
   // loadingSubs = new Subscription()
 
   constructor(private auth: AuthService, private ui: UiService,
-              private store: Store<{ app: StateModel }>) {
+              private store: Store<State>) {
     setTimeout(() => this.pwd_type = 'password', 500)
   }
 
   ngOnInit(): void {
-    this.isLoading$ = this.store.pipe(map(st => st.app.isLoading))
+    this.isLoading$ = this.store.select(getIsLoadin)
+
+    // this.isLoading$ = this.store.pipe(map(st => st.app.isLoading))
     // this.isLoading$.subscribe(d => console.log('ISLOADING', d))
     // this.loadingSubs = this.ui.loadingStateChanged.subscribe(val => this.isLoading = val)
   }

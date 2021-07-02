@@ -8,7 +8,9 @@ import {TrainingService} from "./training.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {UiService} from "./ui.service";
 import {Store} from "@ngrx/store";
-import {StateModel} from "../models/state.model";
+import {START_LOADING, StartLoading, STOP_LOADING, StopLoading} from "../reducers/ui.actions";
+import {State} from "../reducers/app.reducer";
+import {SetAuthenticated, SetUnauthenticated} from "../reducers/auth/auth.actions";
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +22,7 @@ export class AuthService {
 
   constructor(private router: Router, private fireAuth: AngularFireAuth,
               private tr: TrainingService, private snack: MatSnackBar,
-              private ui: UiService, private store: Store<{ app: StateModel }>) {
+              private ui: UiService, private store: Store<State>) {
     // this.onAuthSuccess();
   }
 
@@ -37,21 +39,24 @@ export class AuthService {
 
   private onAuthSuccess() {
     this.isAuthenticated = true;
+    this.store.dispatch(new SetAuthenticated())
     this.router.navigate(['/training'])
-    this.isAuthChanged.next(true)
+    // this.isAuthChanged.next(true)
   }
 
   private onLogout() {
     this.user = null;
     this.isAuthenticated = true;
-    this.isAuthChanged.next(false)
+    // this.isAuthChanged.next(false)
+    this.store.dispatch(new SetUnauthenticated())
+
     this.tr.cancelSubscriptions()
     this.router.navigate(['/login'])
   }
 
   async registerUser(auth: AuthModel) {
     // this.ui.start_loading()
-    this.store.dispatch({type: 'START_LOADING'})
+    this.store.dispatch({type: START_LOADING})
     try {
       const res: any = await this.fireAuth.createUserWithEmailAndPassword(auth.email, auth.password)
       console.log("SUCCESS", res.user)
@@ -61,13 +66,13 @@ export class AuthService {
       this.ui.openSnack(err.message)
     }
     // this.ui.stop_loading()
-    this.store.dispatch({type: 'STOP_LOADING'})
+    this.store.dispatch({type: STOP_LOADING})
 
   }
 
   async login(auth: AuthModel) {
     // this.ui.start_loading()
-    this.store.dispatch({type: 'START_LOADING'})
+    this.store.dispatch(new StartLoading())
 
     try {
       const res: any = await this.fireAuth.signInWithEmailAndPassword(auth.email, auth.password)
@@ -78,7 +83,7 @@ export class AuthService {
       this.ui.openSnack(err.message)
     }
     // this.ui.stop_loading()
-    this.store.dispatch({type: 'STOP_LOADING'})
+    this.store.dispatch(new StopLoading())
 
   }
 

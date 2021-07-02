@@ -24,7 +24,7 @@ import {environment} from "../environments/environment";
 import {UiService} from "./services/ui.service";
 import {AuthModule} from "./auth/auth.module";
 import {StoreModule} from "@ngrx/store";
-import {AppReducer} from "./app.reducer";
+import {reducers} from "./reducers/app.reducer";
 
 @NgModule({
   declarations: [
@@ -47,7 +47,7 @@ import {AppReducer} from "./app.reducer";
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     AuthModule,
-    StoreModule.forRoot({app:AppReducer})
+    StoreModule.forRoot(reducers)
   ],
   providers: [ProductService,
     AuthService,

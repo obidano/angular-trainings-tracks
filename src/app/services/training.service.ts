@@ -4,6 +4,9 @@ import {Observable, Subject, Subscription} from "rxjs";
 import {AngularFirestore} from "@angular/fire/firestore";
 import {map} from 'rxjs/operators'
 import {UiService} from "./ui.service";
+import {Store} from "@ngrx/store";
+import {TState} from "../reducers/training/training.reducer";
+import {SetAvailable, SetFinisehd, StartTraining, StopTraining} from "../reducers/training/training.actions";
 
 const Avcollection = 'availableTrainings'
 const finishcollection = 'finishedTrainings'
@@ -24,7 +27,8 @@ export class TrainingService {
   private _availableTrainings: TrainingModel[] = [];
   private _activeTraining?: TrainingModel | null;
 
-  constructor(private fire: AngularFirestore, private ui: UiService) {
+  constructor(private fire: AngularFirestore, private ui: UiService,
+              private store: Store<TState>) {
   }
 
   get availableTrainings(): TrainingModel[] {
@@ -43,8 +47,9 @@ export class TrainingService {
         })
       })).subscribe((res) => {
         // console.log("RES", res)
-        this._availableTrainings = res as TrainingModel[];
-        this.availablesChanged.next(this.availableTrainings)
+        // this._availableTrainings = res as TrainingModel[];
+        this.store.dispatch(new SetAvailable(res as TrainingModel[]))
+        // this.availablesChanged.next(this.availableTrainings)
       }, _ => this.ui.openSnack("Failed to fetch availables trainings"))
 
     this.fbSubs.push(data);
@@ -66,7 +71,9 @@ export class TrainingService {
       })).subscribe((res) => {
         // console.log("RES", res)
         this._trainings = res as TrainingModel[];
-        this.trainingsChanged.next(this.trainings)
+        this.store.dispatch(new SetFinisehd(res as TrainingModel[]))
+
+        // this.trainingsChanged.next(this.trainings)
       }, _ => this.ui.openSnack("Failed to fetch trainings data"))
     this.fbSubs.push(data)
   }
@@ -82,8 +89,9 @@ export class TrainingService {
 
   startTraining(selectedId: string) {
     this.fire.doc(Avcollection + '/' + selectedId).update({lastSelected: new Date()})
-    this._activeTraining = this.availableTrainings.find(i => i.id == selectedId)
-    this.isActiveChanged.next({...this._activeTraining as TrainingModel})
+    // const res = this.availableTrainings.find(i => i.id == selectedId)
+    // this.isActiveChanged.next({...this._activeTraining as TrainingModel})
+    this.store.dispatch(new StartTraining(selectedId))
   }
 
   completeTraining() {
@@ -92,8 +100,10 @@ export class TrainingService {
       date: new Date(),
       state: 'completed'
     } as TrainingModel)
-    this._activeTraining = null;
-    this.isActiveChanged.next(null)
+    // this._activeTraining = null;
+    // this.isActiveChanged.next(null)
+    this.store.dispatch(new StopTraining())
+
   }
 
   cancelExercice(progress: number) {
@@ -104,8 +114,10 @@ export class TrainingService {
       calories: this.activeTraining.calories * (progress / 100),
       state: 'canceled',
     } as TrainingModel)
-    this._activeTraining = null;
-    this.isActiveChanged.next(null)
+    // this._activeTraining = null;
+    this.store.dispatch(new StopTraining())
+
+    // this.isActiveChanged.next(null)
   }
 
   cancelSubscriptions() {

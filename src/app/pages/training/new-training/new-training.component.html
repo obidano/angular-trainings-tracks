@@ -7,7 +7,7 @@
         <mat-form-field>
           <mat-label>Choose training</mat-label>
           <mat-select ngModel name="training" required (selectionChange)="valueChange($event)">
-            <mat-option *ngFor="let type of availableTrainings"
+            <mat-option *ngFor="let type of availableTrainings$| async"
                         [value]="type.id">
               {{type.name}}
             </mat-option>

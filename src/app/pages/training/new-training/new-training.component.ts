@@ -3,6 +3,9 @@ import {TrainingService} from "../../../services/training.service";
 import {TrainingModel} from "../../../models/trainingModel";
 import {NgForm} from "@angular/forms";
 import {Observable, Subscription} from "rxjs";
+import {Store} from "@ngrx/store";
+import {getAvlble, TState} from "../../../reducers/training/training.reducer";
+import {getIsLoadin} from "../../../reducers/app.reducer";
 
 @Component({
   selector: 'app-new-training',
@@ -12,20 +15,23 @@ import {Observable, Subscription} from "rxjs";
 export class NewTrainingComponent implements OnInit, OnDestroy {
   activity_types = [{label: 'Saut à la corde', value: 'saut_corde'}];
   @Output() onCreate = new EventEmitter()
-  availableTrainings: TrainingModel[] = []
-  availableListener = new Subscription()
+  availableTrainings$?: Observable<TrainingModel[]>;
+
+  // availableListener = new Subscription()
 
 
-  constructor(private tr: TrainingService) {
+  constructor(private tr: TrainingService, private store: Store<TState>) {
   }
 
 
   ngOnInit(): void {
+    this.store.select(getIsLoadin).subscribe(i => console.log('loading', i))
+    this.availableTrainings$ = this.store.select(getAvlble)
     this.tr.fetchAvailableTrainings()
-    this.availableListener = this.tr.availablesChanged.subscribe(res => {
-      // console.log('RES', res)
-      this.availableTrainings = res;
-    });
+    /* this.availableListener = this.tr.availablesChanged.subscribe(res => {
+       // console.log('RES', res)
+       this.availableTrainings = res;
+     });*/
   }
 
   submitTraining(form: NgForm) {
@@ -40,7 +46,7 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.availableListener.unsubscribe()
+    // this.availableListener.unsubscribe()
   }
 
 }

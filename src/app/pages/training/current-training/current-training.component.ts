@@ -5,6 +5,9 @@ import {TrainingDialogComponent} from "../training-dialog/training-dialog.compon
 import {TrainingService} from "../../../services/training.service";
 import {Subscription} from "rxjs";
 import {TrainingModel} from "../../../models/trainingModel";
+import {Store} from "@ngrx/store";
+import {getActive, TState} from "../../../reducers/training/training.reducer";
+import {take} from "rxjs/operators";
 
 @Component({
   selector: 'app-current-training',
@@ -13,11 +16,12 @@ import {TrainingModel} from "../../../models/trainingModel";
 })
 export class CurrentTrainingComponent implements OnInit, OnDestroy {
   progress = 0
-  timer?: number;
+  timer?: any;
   @Output() onExit = new EventEmitter()
   training?: TrainingModel;
 
-  constructor(public dialog: MatDialog, private tr: TrainingService) {
+  constructor(public dialog: MatDialog, private tr: TrainingService,
+              private store: Store<TState>) {
   }
 
 
@@ -28,14 +32,26 @@ export class CurrentTrainingComponent implements OnInit, OnDestroy {
   }
 
   startResumerTimer() {
-    const step = this.tr.activeTraining.duration / 100 * 1000;
-    this.timer = setInterval(() => {
-      this.progress += 10;
-      if (this.progress >= 100) {
-        this.tr.completeTraining()
-        clearInterval(this.timer)
-      }
-    }, step)
+    this.store.select(getActive).pipe(take(1)).subscribe(active => {
+      console.log('ACTIVE', active)
+      if (!active) return
+      const step = active.duration / 100 * 1000;
+      this.timer = setInterval(() => {
+        this.progress += 10;
+        if (this.progress >= 100) {
+          this.tr.completeTraining()
+          clearInterval(this.timer)
+        }
+      }, step)
+    });
+
+    /* this.timer = setInterval(() => {
+       this.progress += 10;
+       if (this.progress >= 100) {
+         this.tr.completeTraining()
+         clearInterval(this.timer)
+       }
+     }, step)*/
   }
 
   onStop() {

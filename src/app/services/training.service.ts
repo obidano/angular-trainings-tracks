@@ -2,11 +2,12 @@ import {Injectable} from '@angular/core';
 import {TrainingModel} from "../models/trainingModel";
 import {Observable, Subject, Subscription} from "rxjs";
 import {AngularFirestore} from "@angular/fire/firestore";
-import {map} from 'rxjs/operators'
+import {map, take} from 'rxjs/operators'
 import {UiService} from "./ui.service";
 import {Store} from "@ngrx/store";
-import {TState} from "../reducers/training/training.reducer";
+import {getActive, TState} from "../reducers/training/training.reducer";
 import {SetAvailable, SetFinisehd, StartTraining, StopTraining} from "../reducers/training/training.actions";
+import {StartLoading, StopLoading} from "../reducers/ui.actions";
 
 const Avcollection = 'availableTrainings'
 const finishcollection = 'finishedTrainings'
@@ -36,6 +37,8 @@ export class TrainingService {
   }
 
   fetchAvailableTrainings() {
+    this.store.dispatch(new StartLoading())
+
     const data = this.fire
       .collection(Avcollection)
       .snapshotChanges()
@@ -50,7 +53,12 @@ export class TrainingService {
         // this._availableTrainings = res as TrainingModel[];
         this.store.dispatch(new SetAvailable(res as TrainingModel[]))
         // this.availablesChanged.next(this.availableTrainings)
-      }, _ => this.ui.openSnack("Failed to fetch availables trainings"))
+        this.store.dispatch(new StopLoading())
+
+      }, _ => {
+        this.store.dispatch(new StopLoading())
+        this.ui.openSnack("Failed to fetch availables trainings");
+      })
 
     this.fbSubs.push(data);
   }
@@ -95,29 +103,36 @@ export class TrainingService {
   }
 
   completeTraining() {
-    this.addDataToFirestore({
-      ...this._activeTraining,
-      date: new Date(),
-      state: 'completed'
-    } as TrainingModel)
-    // this._activeTraining = null;
-    // this.isActiveChanged.next(null)
-    this.store.dispatch(new StopTraining())
+    this.store.select(getActive).pipe(take(1)).subscribe(active => {
+      if (!active) return
+      this.addDataToFirestore({
+        ...active,
+        date: new Date(),
+        state: 'completed'
+      } as TrainingModel)
+      // this._activeTraining = null;
+      // this.isActiveChanged.next(null)
+      this.store.dispatch(new StopTraining())
+
+    })
+
 
   }
 
   cancelExercice(progress: number) {
-    this.addDataToFirestore({
-      ...this._activeTraining,
-      date: new Date(),
-      duration: this.activeTraining.duration * (progress / 100),
-      calories: this.activeTraining.calories * (progress / 100),
-      state: 'canceled',
-    } as TrainingModel)
-    // this._activeTraining = null;
-    this.store.dispatch(new StopTraining())
+    this.store.select(getActive).pipe(take(1)).subscribe(active => {
+      if (!active) return
+      this.addDataToFirestore({
+        ...active,
+        date: new Date(),
+        duration: this.activeTraining.duration * (progress / 100),
+        calories: this.activeTraining.calories * (progress / 100),
+        state: 'canceled',
+      } as TrainingModel)
+      // this._activeTraining = null;
+      this.store.dispatch(new StopTraining())
 
-    // this.isActiveChanged.next(null)
+    })
   }
 
   cancelSubscriptions() {

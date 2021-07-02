@@ -6,8 +6,8 @@ import {createFeatureSelector, createSelector} from "@ngrx/store";
 
 export interface TrainingState {
   availableTrainings: TrainingModel[];
-  finished: TrainingModel[],
-  active: TrainingModel | null
+  finished: TrainingModel[];
+  active?: TrainingModel;
 }
 
 export interface TState extends RootState {
@@ -17,7 +17,7 @@ export interface TState extends RootState {
 const initialState: TrainingState = {
   availableTrainings: [],
   finished: [],
-  active: null
+  active: undefined
 }
 
 export function TrainingReducer(state = initialState, action: any) {

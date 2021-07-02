@@ -1,10 +1,10 @@
 import {START_LOADING, STOP_LOADING} from "./ui.actions";
 
-export interface UiModel {
+export interface UiState {
   isLoading: boolean;
 }
 
-const initialState: UiModel = {
+const initialState: UiState = {
   isLoading: false
 }
 
@@ -20,4 +20,4 @@ export function UiReducer(state = initialState, action: any) {
   }
 }
 
-export const getIsLoading = (state: UiModel) => state.isLoading
+export const getIsLoading = (state: UiState) => state.isLoading

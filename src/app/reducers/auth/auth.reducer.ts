@@ -1,10 +1,10 @@
 import {AuthActions, SET_AUTHENTICATED, SET_UNAUTHENTICATED} from "./auth.actions";
 
-export interface RAuthModel {
+export interface AuthState {
   isAuthenticated: boolean;
 }
 
-const initialState: RAuthModel = {
+const initialState: AuthState = {
   isAuthenticated: false
 }
 
@@ -21,4 +21,4 @@ export function AuthReducer(state = initialState, action: any) {
   }
 }
 
-export const getIsAuthenticated = (state: RAuthModel) => state.isAuthenticated
+export const getIsAuthenticated = (state: AuthState) => state.isAuthenticated
